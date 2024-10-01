@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainCharacter : DebuggableMonoBehaviour
@@ -12,10 +10,6 @@ public class MainCharacter : DebuggableMonoBehaviour
         base.Awake();
     }
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
     protected override void Start()
     {
         base.Start();
@@ -30,4 +24,14 @@ public class MainCharacter : DebuggableMonoBehaviour
         Vector3 movement = mSpeed * Time.deltaTime * new Vector3(moveX, moveY, 0);
         transform.position += movement;
     }
+    
+    void OnDrawGizmos()
+    {
+        // Draw a red sphere at the transform's position if collider is a trigger
+        Gizmos.color = Color.red;
+        if (GetComponent<Collider2D>().isTrigger)
+        {
+            Gizmos.DrawWireSphere(transform.position, 0.5f);
+        }
+    }    
 }

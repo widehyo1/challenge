@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -39,18 +36,6 @@ public class DebuggableMonoBehaviour : MonoBehaviour, IDebuggerable
         }
     }
 
-    protected virtual void OnDisable()
-    { 
-        if (isDebugBuild)
-        {
-            LogType logType = new("System");
-            Log($"{GetType().Name}.OnDisable", logType);
-        }
-        else
-        {
-            // Debug.Log($"{GetType().Name}.OnDisable");
-        }
-    }
 
     private Logger GetLogger()
     {

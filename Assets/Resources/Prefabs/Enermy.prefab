@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6284137005175593665}
   - component: {fileID: 486149963790204396}
   - component: {fileID: 1414698070251942758}
+  - component: {fileID: 6071232134895301806}
   m_Layer: 0
   m_Name: Enermy
   m_TagString: Untagged
@@ -129,7 +130,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,3 +146,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6071232134895301806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486615341821736494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3caa65c68a8efa74fadccb84d76122f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 6284137005175593665}
