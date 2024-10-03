@@ -5,7 +5,7 @@ public class GlobalGameManager : MonoBehaviour
     public GameManager gameManager;
     void Awake()
     {
-        gameObject.AddComponent<DebuggableMonoBehaviour>();
+        GetComponent<DebuggableMonoBehaviour>();
         gameManager = gameObject.AddComponent<GameManager>();
     }
 

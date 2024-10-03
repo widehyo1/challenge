@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class CollisionDetector : DebuggableMonoBehaviour
 {
@@ -8,10 +9,7 @@ public class CollisionDetector : DebuggableMonoBehaviour
     {
         base.Start();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Log("SpriteRenderer component missing from this GameObject.", logType);
-        }
+        Assert.IsNotNull(spriteRenderer, "SpriteRenderer component missing from this GameObject.");
     }
 
     void OnTriggerEnter2D(Collider2D other)

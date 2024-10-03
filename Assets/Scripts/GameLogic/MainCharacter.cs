@@ -5,6 +5,8 @@ public class MainCharacter : DebuggableMonoBehaviour
 
     [Range(0f, 10f)]
     [SerializeField] private float mSpeed = 5f;
+
+    public static Vector3 position;
     protected override void Awake()
     {
         base.Awake();
@@ -23,6 +25,7 @@ public class MainCharacter : DebuggableMonoBehaviour
 
         Vector3 movement = mSpeed * Time.deltaTime * new Vector3(moveX, moveY, 0);
         transform.position += movement;
+        position = transform.position;
     }
     
     void OnDrawGizmos()

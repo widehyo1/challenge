@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -18,17 +19,10 @@ public class GameManager : DebuggableMonoBehaviour
         Log("gameManager[Awake]: get objectPool component", logtype);
     }
 
-    protected override void Start()
+    protected override async void Start()
     {
         base.Start();
-        StartCoroutine(WaitForObjectPoolInitialization());
-    }
-
-
-    private IEnumerator WaitForObjectPoolInitialization()
-    {
-        yield return new WaitUntil(() => objectPool.IsInitialized);
-
+        await UniTask.WaitUntil(() => objectPool.IsInitialized);
         GenerateEnermy();
     }
 
