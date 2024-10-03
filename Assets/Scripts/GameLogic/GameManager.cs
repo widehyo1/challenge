@@ -14,13 +14,13 @@ public class GameManager : DebuggableMonoBehaviour
     protected override void Awake()
     {
         base.Awake();
+        objectPool = GetComponent<ObjectPool>();
+        Log("gameManager[Awake]: get objectPool component", logtype);
     }
 
     protected override void Start()
     {
         base.Start();
-        objectPool = gameObject.AddComponent<ObjectPool>();
-        Log("objectPool is added to gameObject's component", logtype);
         StartCoroutine(WaitForObjectPoolInitialization());
     }
 
@@ -40,7 +40,6 @@ public class GameManager : DebuggableMonoBehaviour
             Enermy enermy = enermyPool.Get();
             enermy.transform.SetPositionAndRotation(new Vector3(i * spacing - (enermyCount / 2 * spacing), -6, 0), Quaternion.identity);
         }
-
     }
 
 
