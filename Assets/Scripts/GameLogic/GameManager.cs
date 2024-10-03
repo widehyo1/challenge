@@ -5,9 +5,8 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(ObjectPool))]
 public class GameManager : DebuggableMonoBehaviour
 {
-
     private ObjectPool objectPool;
-
+    private readonly LogType logtype = new("GameLogic");
     [SerializeField] private int enermyCount = 10;
 
     [Range(0f, 3f)]
@@ -21,7 +20,6 @@ public class GameManager : DebuggableMonoBehaviour
     {
         base.Start();
         objectPool = gameObject.AddComponent<ObjectPool>();
-        ILogType logtype = new LogType("GameLogic");
         Log("objectPool is added to gameObject's component", logtype);
         StartCoroutine(WaitForObjectPoolInitialization());
     }
