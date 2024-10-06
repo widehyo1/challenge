@@ -3,7 +3,12 @@ guid: 19f0f6c87f5bb6e44a8418c2a1e7d2ae
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - pvs: {fileID: 11400000, guid: 48359718ec78c8744b4f74539110b588, type: 2}
+  - evs: {fileID: 11400000, guid: 9b413e24487874241b616f293f363a04, type: 2}
+  - es: {fileID: 11400000, guid: 9add7089e61be2a4b9216277ab515817, type: 2}
+  - enermyPrefab: {instanceID: 0}
+  - mainCharacterPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

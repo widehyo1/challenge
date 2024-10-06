@@ -14,7 +14,7 @@ public class DebuggableMonoBehaviour : MonoBehaviour, IDebuggerable
         isDebugBuild = Debug.isDebugBuild;
         if (isDebugBuild)
         {
-            LogType logType = new("System");
+            LogType logType = new(VariableStore.SYSTEM);
             Log($"{GetType().Name}.Awake", logType);
         }
         else
@@ -27,7 +27,7 @@ public class DebuggableMonoBehaviour : MonoBehaviour, IDebuggerable
     { 
         if (isDebugBuild)
         {
-            LogType logType = new("System");
+            LogType logType = new(VariableStore.SYSTEM);
             Log($"{GetType().Name}.Start", logType);
         }
         else
@@ -51,7 +51,7 @@ public class DebuggableMonoBehaviour : MonoBehaviour, IDebuggerable
     private Logger SpawnLogger()
     {
         Debug.Log("spawn logger");
-        Logger.LogFilePath = Path.Combine(Application.persistentDataPath, "Log", "log.html");
+        Logger.LogFilePath = Path.Combine(Application.persistentDataPath, VariableStore.LOG_DIR, VariableStore.LOG_FILE);
         Debug.Log(Logger.LogFilePath);
         Logger logger = gameObject.AddComponent<Logger>();
         return logger;

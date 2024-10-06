@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class MainCharacter : DebuggableMonoBehaviour
 {
-
-    [Range(0f, 10f)]
-    [SerializeField] private float mSpeed = 5f;
-
     public static Vector3 position;
     protected override void Awake()
     {
@@ -20,10 +16,10 @@ public class MainCharacter : DebuggableMonoBehaviour
     void Update()
     {
 
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        float moveX = Input.GetAxis(VariableStore.HORIZONTAL);
+        float moveY = Input.GetAxis(VariableStore.VERTICAL);
 
-        Vector3 movement = mSpeed * Time.deltaTime * new Vector3(moveX, moveY, 0);
+        Vector3 movement = VariableStore.playerSpeed * Time.deltaTime * new Vector3(moveX, moveY, 0);
         transform.position += movement;
         position = transform.position;
     }

@@ -1,32 +1,12 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Assertions;
 using UnityEngine.Pool;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ObjectPool : DebuggableMonoBehaviour
 {
-
-    [Tooltip("address for enermy")]
-    [SerializeField] public string enermyAddress = "Enermy";
-
-    [Tooltip("address for main character")]
-    [SerializeField] public string mainCharacterAddress = "MainCharacter";
-    [SerializeField] private AsyncOperationHandle<GameObject> enermyHandle;
-    [SerializeField] private AsyncOperationHandle<GameObject> mainCharacterHandle;
-
     [SerializeField] private bool collectionCheck = true;
-    [SerializeField] private int defaultCapacity = 10;
-    [SerializeField] private int maxSize = 10;
-
     [SerializeField] public bool IsInitialized { get; private set; }
-
-    [SerializeField] private GameObject enermyPrefab;
-    [SerializeField] private GameObject mainCharacterPrefab;
-
-    private readonly LogType logType = new("GameLogic");
-
+    private readonly LogType logType = new(VariableStore.GAME_LOGIC);
     private IObjectPool<Enermy> enermyPool;
 
     protected override void Awake()
@@ -34,20 +14,26 @@ public class ObjectPool : DebuggableMonoBehaviour
         base.Awake();
     }
 
-    protected override async void Start()
+    protected override void Start()
     {
         base.Start();
+        if (VariableStore.prefabInventory == null)
+        {
+            Log($"gameManager is not set", logType);
+            return;
+        }
         enermyPool = new ObjectPool<Enermy>(CreateEnermy, OnGetFromPool, 
             OnReleaseToPool, OnDestroyPooledObject,
-            collectionCheck, defaultCapacity, maxSize);
+            collectionCheck, VariableStore.defaultCapacity, VariableStore.maxSize);
         Log($"object pool started with enermyPool: {enermyPool}", logType);
-        enermyHandle = Addressables.LoadAssetAsync<GameObject>(enermyAddress);
-        enermyPrefab = await enermyHandle;
-        mainCharacterHandle = Addressables.LoadAssetAsync<GameObject>(mainCharacterAddress);
-        mainCharacterPrefab = await mainCharacterHandle;
-        Instantiate(mainCharacterPrefab, new(0, 0, 0), Quaternion.identity);
-
         IsInitialized = true;
+    }
+
+    public void InstantiateMainCharacter()
+    {
+        var pi = VariableStore.prefabInventory;
+        pi.TryGetValue(VariableStore.mainCharacterAddress, out var mainCharacterPrefab);
+        Instantiate(mainCharacterPrefab, new(0, 0, 0), Quaternion.identity);
     }
 
     public IObjectPool<Enermy> GetEnermyPool()
@@ -58,6 +44,8 @@ public class ObjectPool : DebuggableMonoBehaviour
     // invoked when creating an item to populate the enermy pool
     private Enermy CreateEnermy()
     {
+        var pi = VariableStore.prefabInventory;
+        pi.TryGetValue(VariableStore.enermyAddress, out var enermyPrefab);
         Assert.IsNotNull(enermyPrefab, "enermyPrefab is null");
         GameObject enermyInstance = Instantiate(enermyPrefab, new(0, 0, 0), Quaternion.identity);
         Assert.IsNotNull(enermyInstance, "enermyInstance is null");
@@ -80,12 +68,5 @@ public class ObjectPool : DebuggableMonoBehaviour
     {
         Destroy(pooledEnermy.gameObject);
     }
-
-    private void OnDestroy()
-    {
-        Addressables.Release(enermyHandle);
-        Addressables.Release(mainCharacterHandle);
-    }
-
 
 }

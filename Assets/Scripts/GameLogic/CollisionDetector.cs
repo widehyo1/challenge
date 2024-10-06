@@ -4,7 +4,7 @@ using UnityEngine.Assertions;
 public class CollisionDetector : DebuggableMonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
-    private readonly LogType logType = new("GameLogic");
+    private readonly LogType logType = new(VariableStore.GAME_LOGIC);
     protected override void Start()
     {
         base.Start();

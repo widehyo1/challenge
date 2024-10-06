@@ -4,11 +4,8 @@ using UnityEngine.Pool;
 public class Enermy : DebuggableMonoBehaviour
 {
 
-    [Range(0f, 10f)]
-    [SerializeField] private float speed = 5f;
     private IObjectPool<Enermy> enermyPool;
-
-    private readonly LogType logType = new("GameLogic");
+    private readonly LogType logType = new(VariableStore.GAME_LOGIC);
 
     // public property to give the enermy a referenct to its EnermyPool
     public IObjectPool<Enermy> EnermyPool { set => enermyPool = value; }
@@ -23,10 +20,17 @@ public class Enermy : DebuggableMonoBehaviour
         base.Start();
     }
 
+    private Vector3 ToMainCharacterDirection()
+    {
+        Vector3 direction = MainCharacter.position - transform.position;
+        direction.Normalize();
+        return direction;
+    }
+
     void Update()
     {
-        Vector3 direction = new(0, 1, 0);
-        Vector3 velocity = speed * Time.deltaTime * direction;
+        Vector3 direction = ToMainCharacterDirection();
+        Vector3 velocity = VariableStore.enermySpeed * Time.deltaTime * direction;
 
         transform.position += velocity;
         if (Mathf.Abs(transform.position.x) > 10 || Mathf.Abs(transform.position.y) > 10)
