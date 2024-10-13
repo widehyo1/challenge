@@ -1,35 +1,37 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Enermy : DebuggableMonoBehaviour
+public class Enermy : MonoBehaviour
 {
 
     private IObjectPool<Enermy> enermyPool;
+
+    private GameObject player;
     private readonly LogType logType = new(VariableStore.GAME_LOGIC);
 
     // public property to give the enermy a referenct to its EnermyPool
     public IObjectPool<Enermy> EnermyPool { set => enermyPool = value; }
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
+        player = GameObject.FindWithTag("Player");
     }
 
-    protected override void Start()
+    void Start()
     {
-        base.Start();
+
     }
 
-    private Vector3 ToMainCharacterDirection()
+    private Vector3 ToPlayerDirection()
     {
-        Vector3 direction = MainCharacter.position - transform.position;
+        Vector3 direction = player.transform.position - transform.position;
         direction.Normalize();
         return direction;
     }
 
     void Update()
     {
-        Vector3 direction = ToMainCharacterDirection();
+        Vector3 direction = ToPlayerDirection();
         Vector3 velocity = VariableStore.enermySpeed * Time.deltaTime * direction;
 
         transform.position += velocity;
@@ -37,7 +39,7 @@ public class Enermy : DebuggableMonoBehaviour
         {
             enermyPool.Release(this);
             Enermy[] enermies = (Enermy[]) FindObjectsByType(GetType(), FindObjectsSortMode.None);
-            Log($"enermies.Length is: {enermies.Length}", logType);
+            Debug.Log($"enermies.Length is: {enermies.Length}");
             if (enermies.Length < 10) 
             {
                 Enermy enermy = enermyPool.Get();

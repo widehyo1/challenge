@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 31b1f40ce8918514992ced08e1525307
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - gameData: {fileID: 11400000, guid: e574830e15c496248b8fed88e4e7e296, type: 2}
+  - spawnerData: {fileID: 11400000, guid: d97bc5809883c6d4e9eea69f327586c5, type: 2}
+  - gunData: {fileID: 11400000, guid: fc9135a5fc8014744b9708a32b82b874, type: 2}
+  - bulletData: {fileID: 11400000, guid: b532f909a7390d245922d207b4e60ab0, type: 2}
+  - playerData: {fileID: 11400000, guid: baf34cfda4d1d1a47838b348daf54f40, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -2,38 +2,36 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Pool;
 
-public class ObjectPool : DebuggableMonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private bool collectionCheck = true;
     [SerializeField] public bool IsInitialized { get; private set; }
     private readonly LogType logType = new(VariableStore.GAME_LOGIC);
     private IObjectPool<Enermy> enermyPool;
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
     }
 
-    protected override void Start()
+    void Start()
     {
-        base.Start();
         if (VariableStore.prefabInventory == null)
         {
-            Log($"gameManager is not set", logType);
+            Debug.Log($"gameManager is not set");
             return;
         }
         enermyPool = new ObjectPool<Enermy>(CreateEnermy, OnGetFromPool, 
             OnReleaseToPool, OnDestroyPooledObject,
             collectionCheck, VariableStore.defaultCapacity, VariableStore.maxSize);
-        Log($"object pool started with enermyPool: {enermyPool}", logType);
+        Debug.Log($"object pool started with enermyPool: {enermyPool}");
         IsInitialized = true;
     }
 
-    public void InstantiateMainCharacter()
+    public void InstantiatePlayer()
     {
         var pi = VariableStore.prefabInventory;
-        pi.TryGetValue(VariableStore.mainCharacterAddress, out var mainCharacterPrefab);
-        Instantiate(mainCharacterPrefab, new(0, 0, 0), Quaternion.identity);
+        // pi.TryGetValue(VariableStore.PlayerAddress, out var PlayerPrefab);
+        // Instantiate(PlayerPrefab, new(0, 0, 0), Quaternion.identity);
     }
 
     public IObjectPool<Enermy> GetEnermyPool()
