@@ -25,12 +25,17 @@ public class GameLifetimeScope : LifetimeScope
         // register data
         RegisterData(builder);
 
-        builder.RegisterComponentInHierarchy<PlayerMove>().AsSelf();
         builder.RegisterComponentInHierarchy<PrefabLoader>().AsSelf();
-        builder.RegisterComponentInHierarchy<BulletPool>().AsSelf();
-        builder.RegisterComponentInHierarchy<Bullet>().AsSelf();
+        builder.RegisterComponentInHierarchy<GameManager>().AsSelf();
+        builder.RegisterComponentOnNewGameObject<BulletPool>(Lifetime.Scoped, "bulletPool");
+        builder.RegisterComponentOnNewGameObject<Gun>(Lifetime.Scoped, "gun").As<IWeapon>();
+        // builder.Register<PlayerMove>(Lifetime.Scoped);
+        // builder.RegisterComponentInHierarchy<BulletPool>().AsSelf();
+        // builder.RegisterComponentInHierarchy<Bullet>().AsSelf();
         // builder.Register<IProjectile, Bullet>(Lifetime.Scoped);
-        builder.RegisterComponentInHierarchy<Gun>().AsSelf();
+        // builder.Register<Bullet>(Lifetime.Scoped);
+        // builder.RegisterComponentInHierarchy<Gun>().AsSelf();
+        // builder.RegisterComponentOnNewGameObject<Player>(Lifetime.Scoped, "player");
     }
 
     private void RegisterData(IContainerBuilder builder)

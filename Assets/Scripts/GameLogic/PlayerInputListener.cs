@@ -15,6 +15,7 @@ public class PlayerInputListener : MonoBehaviour
     void Awake()
     {
         playerInputActions = GetComponent<PlayerInput>();
+        _move = Vector2.zero;
     }
 
     void OnEnable()

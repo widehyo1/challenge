@@ -7,23 +7,28 @@ using VContainer;
 public class PlayerMove : MonoBehaviour
 {
     private PlayerInputListener playerInputListener;
-    private PlayerData _playerData;
+    [SerializeField] private PlayerData playerData;
     private Rigidbody2D playerRigidBody;
+    private Player player;
 
-    [Inject]
-    public void Construct(PlayerData playerData)
+    void Awake()
     {
-        Debug.Log($"Construction[PlayerMove] start");
+        Debug.Log($"Awake[PlayerMove] start");
         Debug.Log($"playerData: {playerData}");
         playerInputListener = GetComponent<PlayerInputListener>();
-        _playerData = playerData;
         playerRigidBody = GetComponent<Rigidbody2D>();
-        Debug.Log($"Construction[PlayerMove] end");
+        player = GetComponent<Player>();
+        Debug.Log($"Awake[PlayerMove] end");
     }
 
     private void Update()
     {
-        Vector2 movement = _playerData.speed * Time.deltaTime * playerInputListener.move;
+        Vector2 move = playerInputListener.move;
+        if (move != Vector2.zero)
+        {
+            player.lastMoveDirection = move.normalized;
+        }
+        Vector2 movement = playerData.speed * Time.deltaTime * move;
         playerRigidBody.MovePosition(playerRigidBody.position + movement);
     }
 

@@ -78,7 +78,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1463234397
+  m_SortingLayerID: -1485608247
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
@@ -152,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3caa65c68a8efa74fadccb84d76122f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 4468814071127897125}
 --- !u!50 &-6716818461319925490
 Rigidbody2D:
   serializedVersion: 4
@@ -302,6 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76680229b36b6df468369446fa78ee0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: baf34cfda4d1d1a47838b348daf54f40, type: 2}
 --- !u!1 &4135151296960870443
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,8 +372,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1826415605
-  m_SortingLayer: 2
+  m_SortingLayerID: -1485608247
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}

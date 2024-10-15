@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af2b037b6572e84e85fe86715eb800b, type: 3}
   m_Name: BulletData
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 3
   defaultCapacity: 0
-  maxSize: 200
+  maxSize: 10

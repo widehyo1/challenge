@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Pool;
@@ -11,42 +12,37 @@ using VContainer.Unity;
 public class BulletPool : MonoBehaviour, IProjectilePool
 {
     private IObjectPool<IProjectile> IbulletPool;
-    private PrefabLoader _prefabLoader;
     private GameObject _bulletPrefab;
+    public GameObject bulletPrefab {
+        get => _bulletPrefab;
+        set => _bulletPrefab = value;
+    }
     private ProjectileData _bulletData;
     private CancellationTokenSource cts;
     [SerializeField] private bool collectionCheck = true;
     [SerializeField] public bool IsInitialized { get; private set; }
 
+    private Player _player;
+    public void SetPlayer(Player player)
+    {
+        _player = player;
+    }
+
     [Inject]
-    public void Construct(PrefabLoader prefabLoader, ProjectileData bulletData)
+    public void Construct(ProjectileData bulletData)
     {
         Debug.Log($"Construction[BulletPool] start");
-        Debug.Log($"prefabLoader: {prefabLoader}");
         Debug.Log($"bulletData: {bulletData}");
-        _prefabLoader = prefabLoader;
-        Debug.Log($"_prefabLoader: {_prefabLoader}");
         _bulletData = bulletData;
         Debug.Log($"_bulletData: {_bulletData}");
         cts = new CancellationTokenSource();
         Debug.Log("Construction[BulletPool] ended");
     }
 
-    async public UniTask<bool> Ready()
-    {
-        Debug.Log("Ready[BulletPool] start");
-        await UniTask.WaitUntil(() => PrefabLoader.IsInitialized);
-        Debug.Log("prefabLoader.IsInitialized");
-        PrefabLoader.prefabInventory.TryGetValue("Bullet", out GameObject bulletPrefab);
-        _bulletPrefab = bulletPrefab;
-        Debug.Log($"_bulletPrefab: {_bulletPrefab}");
-        IsInitialized = true;
-        Debug.Log("Ready[BulletPool] end");
-        return IsInitialized;
-    }
-
     public IObjectPool<IProjectile> GetProjectilePool()
     {
+        Debug.Log("GetProjectilePool start");
+        
         IbulletPool = new ObjectPool<IProjectile>(CreateBullet, OnGetFromPool,
             OnReleaseToPool, OnDestroyPooledObject,
             collectionCheck, _bulletData.defaultCapacity, _bulletData.maxSize);
@@ -57,8 +53,8 @@ public class BulletPool : MonoBehaviour, IProjectilePool
     {
         GameObject bulletInstance = Instantiate(_bulletPrefab,
             Vector3.zero, Quaternion.identity);
-        _ = bulletInstance.TryGetComponent<Bullet>(out Bullet bullet);
-        bullet.IBulletPool = IbulletPool;
+        Bullet bullet = bulletInstance.GetComponent<Bullet>();
+        bullet.IbulletPool = IbulletPool;
         return bullet;
     }
 
@@ -79,6 +75,7 @@ public class BulletPool : MonoBehaviour, IProjectilePool
         if (projectile is Bullet bullet)
         {
             bullet.gameObject.SetActive(false);
+            bullet.gameObject.transform.SetPositionAndRotation(_player.gameObject.transform.position, Quaternion.identity);
         }
         else
         {
@@ -96,6 +93,15 @@ public class BulletPool : MonoBehaviour, IProjectilePool
         {
             Debug.Log("projectile is not a bullet");
         }
-        
+    }
+
+    public IProjectile Get()
+    {
+        return IbulletPool.Get();
+    }
+
+    public void SetPrefab(GameObject bulletPrefab)
+    {
+        _bulletPrefab = bulletPrefab;
     }
 }

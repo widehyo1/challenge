@@ -7,53 +7,56 @@ using VContainer;
 
 public class Bullet : MonoBehaviour, IProjectile
 {
-    private BulletPool _bulletPool;
     private IObjectPool<IProjectile> _IbulletPool;
-    public IObjectPool<IProjectile> IBulletPool { get => _IbulletPool; set => _IbulletPool = value; }
-    private GameData _gameData;
-    private ProjectileData _bulletData;
-    public ProjectileData bulletData { get => _bulletData; private set => _bulletData = value; }
-    public Rigidbody2D bulletRigidBody;
-    public bool IsInitialized { get; private set; }
+    public IObjectPool<IProjectile> IbulletPool {
+        get => _IbulletPool;
+        set => _IbulletPool = value;
+    }
 
-    [Inject]
-    public void Construct(BulletPool bulletPool, GameData gameData, ProjectileData bulletData)
+    private Rigidbody2D _bulletRigidBody;
+    public Rigidbody2D bulletRigidBody {
+        get => _bulletRigidBody;
+    }
+
+    private GameObject playerObj;
+    private Player player;
+    [SerializeField] private ProjectileData _bulletData;
+    public ProjectileData bulletData {
+        get => _bulletData;
+        set => _bulletData = value;
+    }
+    void Awake()
     {
-        Debug.Log($"Construction[Bullet] start");
-        Debug.Log($"bulletPool: {bulletPool}");
-        Debug.Log($"gameData: {gameData}");
-        _bulletPool = bulletPool;
-        Debug.Log($"_bulletPool: {_bulletPool}");
-        _gameData = gameData;
-        Debug.Log($"_gameData: {_gameData}");
-        _bulletData = bulletData;
-        Debug.Log($"_bulletData: {_bulletData}");
-        bulletRigidBody = GetComponent<Rigidbody2D>();
-        Debug.Log($"bulletRigidBody: {bulletRigidBody}");
-        Debug.Log($"Construction[Bullet] ended");
+        Debug.Log($"Awake[Bullet] start");
+        _bulletRigidBody = GetComponent<Rigidbody2D>();
+        playerObj = GameObject.FindWithTag("Player");
+        player = playerObj.GetComponent<Player>();
+        Debug.Log($"_bulletRigidBody: {_bulletRigidBody}");
+        Debug.Log($"Awake[Bullet] ended");
+    }
+
+    void OnEnable()
+    {
+        Debug.Log($"OnEnabled[Bullet] start");
+        // Debug.Log($"player.lastMoveDirection: {player.lastMoveDirection}");
+        // Debug.Log($"_bulletData.speed: {_bulletData.speed}");
+        // Vector2 movement = _bulletData.speed * Time.deltaTime * player.lastMoveDirection;
+        // _bulletRigidBody.velocity = movement;
+        // transform.SetPositionAndRotation(player.transform.position, Quaternion.identity);
+        // bulletRigidBody.velocity = player.lastMoveDirection * bulletData.speed;
+        Debug.Log($"OnEnabled[Bullet] ended");
     }
 
     public bool InGameBoard(GameData gameData)
     {
-        throw new System.NotImplementedException();
+        Collider2D[] colliders = null;
+        Physics2D.OverlapBoxNonAlloc(playerObj.transform.position, size:gameData.gameBoardleftTop, angle:0f, results:colliders, layerMask:7);
+        return colliders.Length > 0;
     }
 
     public void InvokeRelease()
     {
-        throw new System.NotImplementedException();
-    }
-
-    async public UniTask<bool> Ready()
-    {
-        Debug.Log("Ready[Bullet] start");
-        // await UniTask.WaitUntil(() => _bulletPool.IsInitialized);
-        // bool result = await _bulletPool.Ready();
-        await _bulletPool.Ready();
-        Debug.Log("_bulletPool.IsInitialized");
-        _IbulletPool = _bulletPool.GetProjectilePool();
-        Debug.Log($"_IbulletPool: {_IbulletPool}");
-        Debug.Log("Ready[Bullet] end");
-        return _IbulletPool != null;
+        _IbulletPool.Release(this);
     }
 
 }
