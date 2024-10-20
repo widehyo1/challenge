@@ -4,18 +4,20 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enermy
   - GameManager
+  - Weapon
+  - Enermy
+  - Item
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - GamePlay
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enermy
+  - Weapon
+  - Item
   - 
   - 
   - 
@@ -42,4 +44,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 555433533
+    locked: 0
+  - name: Item
+    uniqueID: 378569529
+    locked: 0
+  - name: GamePlay
+    uniqueID: 2809359049
+    locked: 0
+  - name: Enermy
+    uniqueID: 3546763339
+    locked: 0
+  - name: Weapon
+    uniqueID: 734710997
+    locked: 0
+  - name: Player
+    uniqueID: 107221907
     locked: 0

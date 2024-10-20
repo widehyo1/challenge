@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9b1f78092a08f4aaed9c9084657d65, type: 3}
+  m_Name: WaveCompositionData2
+  m_EditorClassIdentifier: 
+  compositions:
+  - enermyName: Sqaure
+    maxCount: 10
+  - enermyName: Rhombus
+    maxCount: 10

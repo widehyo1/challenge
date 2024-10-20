@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponAddress: Gun
   damage: 10
-  timeBetFire: 0.5
+  timeBetFire: 0.8
   lastFireTime: 0

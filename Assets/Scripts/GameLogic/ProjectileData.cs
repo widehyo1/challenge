@@ -12,5 +12,8 @@ public class ProjectileData : ScriptableObject
     public int defaultCapacity;
 
     [SerializeField]
-    public int maxSize;
+    public int penetrationCount;
+
+    [SerializeField]
+    public int maxProjectileCountInScene;
 }

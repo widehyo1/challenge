@@ -12,61 +12,62 @@ using VContainer.Unity;
 public class BulletPool : MonoBehaviour, IProjectilePool
 {
     private IObjectPool<IProjectile> IbulletPool;
-    private GameObject _bulletPrefab;
-    public GameObject bulletPrefab {
-        get => _bulletPrefab;
-        set => _bulletPrefab = value;
-    }
+    private Bullet _bulletPrefab;
     private ProjectileData _bulletData;
+    private GameData _gameData;
+    public int defaultCapacity;
+    public int maxSize;
     private CancellationTokenSource cts;
-    [SerializeField] private bool collectionCheck = true;
-    [SerializeField] public bool IsInitialized { get; private set; }
-
+    private GameObject _playerObj;
     private Player _player;
-    public void SetPlayer(Player player)
-    {
-        _player = player;
-    }
-
     [Inject]
-    public void Construct(ProjectileData bulletData)
+    public void Construct(ProjectileData bulletData, Bullet bulletPrefab, GameData gameData)
     {
         Debug.Log($"Construction[BulletPool] start");
         Debug.Log($"bulletData: {bulletData}");
         _bulletData = bulletData;
+        _gameData = gameData;
+        _bulletPrefab = bulletPrefab;
+        defaultCapacity = bulletData.defaultCapacity;
+        maxSize = bulletData.maxProjectileCountInScene;
         Debug.Log($"_bulletData: {_bulletData}");
         cts = new CancellationTokenSource();
         Debug.Log("Construction[BulletPool] ended");
     }
 
+    public void Start ()
+    {
+        Debug.Log($"Start[BulletPool] start");
+        _playerObj = GameObject.FindWithTag("Player");
+        _player = _playerObj.GetComponent<Player>();
+        IbulletPool = new ObjectPool<IProjectile>(CreateBullet, OnGetFromPool,
+            OnReleaseToPool, OnDestroyPooledObject);
+        Debug.Log($"Start[BulletPool] end");
+    }
+
     public IObjectPool<IProjectile> GetProjectilePool()
     {
-        Debug.Log("GetProjectilePool start");
-        
-        IbulletPool = new ObjectPool<IProjectile>(CreateBullet, OnGetFromPool,
-            OnReleaseToPool, OnDestroyPooledObject,
-            collectionCheck, _bulletData.defaultCapacity, _bulletData.maxSize);
         return IbulletPool;
     }
 
     private Bullet CreateBullet()
     {
-        GameObject bulletInstance = Instantiate(_bulletPrefab,
+        Bullet bulletInstance = Instantiate(_bulletPrefab,
             Vector3.zero, Quaternion.identity);
-        Bullet bullet = bulletInstance.GetComponent<Bullet>();
-        bullet.IbulletPool = IbulletPool;
-        return bullet;
+        bulletInstance.IbulletPool = IbulletPool;
+        return bulletInstance;
     }
 
     private void OnGetFromPool(IProjectile projectile)
     {
-        if (projectile is Bullet bullet)
+        Bullet bullet = projectile as Bullet;
+        if (bullet.gameObject.activeInHierarchy && bullet.IsReset())
+        {
+            bullet.SetPositionAndVelocity();
+        }
+        if (!bullet.gameObject.activeInHierarchy)
         {
             bullet.gameObject.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("projectile is not a bullet");
         }
     }
 
@@ -75,7 +76,6 @@ public class BulletPool : MonoBehaviour, IProjectilePool
         if (projectile is Bullet bullet)
         {
             bullet.gameObject.SetActive(false);
-            bullet.gameObject.transform.SetPositionAndRotation(_player.gameObject.transform.position, Quaternion.identity);
         }
         else
         {
@@ -100,8 +100,8 @@ public class BulletPool : MonoBehaviour, IProjectilePool
         return IbulletPool.Get();
     }
 
-    public void SetPrefab(GameObject bulletPrefab)
+    public int GetCountInactive()
     {
-        _bulletPrefab = bulletPrefab;
+        return IbulletPool.CountInactive;
     }
 }

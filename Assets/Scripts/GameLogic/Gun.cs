@@ -17,42 +17,42 @@ public class Gun : MonoBehaviour, IWeapon
     }
     private float lastFireTime;
     private float timeBetFire;
-    private IObjectPool<IProjectile> _IbulletPool;
     private IProjectilePool _bulletPool;
     public IProjectilePool bulletPool {
         get => _bulletPool;
         set => _bulletPool = value;
     }
     private Vector2 lastFireDirection;
-    private GameObject playerObj;
     private Player player;
 
-    public void SetBulletPool(IProjectilePool bulletPool)
-    {
-        _bulletPool = bulletPool;
-        _IbulletPool = _bulletPool.GetProjectilePool();
-    }
 
     [Inject]
-    public void Construct(WeaponData gunData, ProjectileData bulletData)
+    public void Construct(WeaponData gunData, ProjectileData bulletData, BulletPool bulletPool)
     {
         Debug.Log($"Construction[Gun] start");
         Debug.Log($"gunData: {gunData}");
         _gunData = gunData;
         _bulletData = bulletData;
+        _bulletPool = bulletPool;
         Debug.Log($"Construction[Gun] end");
     }
 
     public void Awake()
     {
         Debug.Log($"Awake[Gun] start");
-        playerObj = GameObject.FindWithTag("Player");
-        player = playerObj.GetComponent<Player>();
         lastFireTime = gunData.lastFireTime;
         timeBetFire = gunData.timeBetFire;
         lastFireDirection = Vector2.up;
         Debug.Log($"Awake[Gun] start");
     }
+
+    public void Start()
+    {
+        Debug.Log($"Start[Gun] start");
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        Debug.Log($"Start[Gun] end");
+    }
+
     public void Fire()
     {
         lastFireTime = Time.time;
@@ -61,6 +61,7 @@ public class Gun : MonoBehaviour, IWeapon
         if (player.playerInputListener.move != Vector2.zero)
         {
             pooledBullet.bulletRigidBody.velocity = player.playerInputListener.move.normalized * _bulletData.speed;
+            lastFireDirection = player.playerInputListener.move.normalized;
         }
         else
         {
@@ -70,7 +71,7 @@ public class Gun : MonoBehaviour, IWeapon
 
     public bool Performable(float timeBetFire)
     {
-        Debug.Log(_IbulletPool.CountInactive);
+        // Debug.Log(_bulletPool.GetCountInactive());
         // return Time.time >= timeBetFire + lastFireTime && _IbulletPool.CountInactive > 0;
         return Time.time >= timeBetFire + lastFireTime;
     }

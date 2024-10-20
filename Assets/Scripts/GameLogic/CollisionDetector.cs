@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class CollisionDetector : DebuggableMonoBehaviour
+public class CollisionDetector : MonoBehaviour
 {
     // [SerializeField] private SpriteRenderer spriteRenderer;
     // private readonly LogType logType = new(VariableStore.GAME_LOGIC);

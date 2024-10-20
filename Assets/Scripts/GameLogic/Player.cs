@@ -14,12 +14,22 @@ public class Player : MonoBehaviour
         get => _playerInputListener;
         private set => _playerInputListener = value;
     }
+    private bool _isDead = false;
+    public bool isDead {
+        get => _isDead;
+    }
 
+    private PlayerHealth playerHealth;
     public Vector2 lastMoveDirection;
 
-    public void SetWeapon(IWeapon weapon)
+    [Inject]
+    // public void Construct(IWeapon weapon)
+    public void Construct()
     {
-        _weapon = weapon;
+        Debug.Log("Construct[Palyer] start");
+        // _weapon = weapon;
+        // Debug.Log($"_weapon: {_weapon}");
+        Debug.Log("Construct[Palyer] end");
     }
 
     void Awake()
@@ -28,6 +38,7 @@ public class Player : MonoBehaviour
         _playerInputListener = GetComponent<PlayerInputListener>();
         Debug.Log("_playerInputListener is set");
         playerMove = GetComponent<PlayerMove>();
+        playerHealth = GetComponent<PlayerHealth>();
         lastMoveDirection = Vector2.up;
         Debug.Log("Awake[Player] end");
     }
@@ -36,8 +47,22 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Start[Player] start");
         Debug.Log($"_weapon: {_weapon}");
-        Debug.Log($"_weapon as Gun: {_weapon as Gun}");
+        // Debug.Log($"_weapon as Gun: {_weapon as Gun}");
         Debug.Log("Start[Player] end");
     }
 
+    public void SetWeapon(IWeapon weapon)
+    {
+        _weapon = weapon;
+    }
+    public void OnDie()
+    {
+        Debug.Log("OnDie[Player]");
+        _isDead = true;
+    }
+
+    public override string ToString()
+    {
+        return $"({playerHealth.HP}/{playerHealth.maxHP}, speed: {playerMove.playerData.speed})";
+    }
 }

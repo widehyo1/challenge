@@ -9,7 +9,7 @@ public class GameLifetimeScope : LifetimeScope
     GameData gameData;
 
     [SerializeField]
-    SpawnerData spawnerData;
+    SpawnPointData spawnPointData;
 
     [SerializeField]
     WeaponData gunData;
@@ -19,31 +19,37 @@ public class GameLifetimeScope : LifetimeScope
 
     [SerializeField]
     PlayerData playerData;
+    [SerializeField]
+    WaveManagerData waveManagerData;
+    [SerializeField]
+    Square sqaurePrefab;
+    [SerializeField]
+    Rhombus rhombusPrefab;
+    [SerializeField]
+    Bullet bulletPrefab;
+
+    [SerializeField]
+    Player playerPrefab;
 
     protected override void Configure(IContainerBuilder builder)
     {
         // register data
         RegisterData(builder);
 
-        builder.RegisterComponentInHierarchy<PrefabLoader>().AsSelf();
+        builder.RegisterComponentInNewPrefab(playerPrefab, Lifetime.Scoped);
+        builder.RegisterComponent(bulletPrefab);
         builder.RegisterComponentInHierarchy<GameManager>().AsSelf();
         builder.RegisterComponentOnNewGameObject<BulletPool>(Lifetime.Scoped, "bulletPool");
         builder.RegisterComponentOnNewGameObject<Gun>(Lifetime.Scoped, "gun").As<IWeapon>();
-        // builder.Register<PlayerMove>(Lifetime.Scoped);
-        // builder.RegisterComponentInHierarchy<BulletPool>().AsSelf();
-        // builder.RegisterComponentInHierarchy<Bullet>().AsSelf();
-        // builder.Register<IProjectile, Bullet>(Lifetime.Scoped);
-        // builder.Register<Bullet>(Lifetime.Scoped);
-        // builder.RegisterComponentInHierarchy<Gun>().AsSelf();
-        // builder.RegisterComponentOnNewGameObject<Player>(Lifetime.Scoped, "player");
     }
 
     private void RegisterData(IContainerBuilder builder)
     {
         builder.RegisterInstance(gameData).AsSelf();
-        builder.RegisterInstance(spawnerData).AsSelf();
+        builder.RegisterInstance(spawnPointData).AsSelf();
         builder.RegisterInstance(gunData).AsSelf();
         builder.RegisterInstance(bulletData).AsSelf();
         builder.RegisterInstance(playerData).AsSelf();
+        builder.RegisterInstance(waveManagerData).AsSelf();
     }
 }

@@ -1,6 +1,5 @@
 public interface IProjectile
 {
-    public bool InGameBoard(GameData gameData);
-
+    public bool InGameBoard();
     public void InvokeRelease();
 }

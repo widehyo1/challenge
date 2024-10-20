@@ -7,7 +7,7 @@ using VContainer;
 public class PlayerMove : MonoBehaviour
 {
     private PlayerInputListener playerInputListener;
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] public PlayerData playerData;
     private Rigidbody2D playerRigidBody;
     private Player player;
 
@@ -21,7 +21,7 @@ public class PlayerMove : MonoBehaviour
         Debug.Log($"Awake[PlayerMove] end");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 move = playerInputListener.move;
         if (move != Vector2.zero)

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpawnerData", menuName = "ScriptableObjects/SpawnerData", order = 3)]
-public class SpawnerData : ScriptableObject
+[CreateAssetMenu(fileName = "SpawnPointData", menuName = "ScriptableObjects/SpawnPointData", order = 3)]
+public class SpawnPointData : ScriptableObject
 {
     [SerializeField]
     public List<Vector2> spawnPoints;
